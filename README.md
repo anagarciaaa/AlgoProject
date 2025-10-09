@@ -54,3 +54,61 @@ Therefore, **Algorithm 1 always finds the best possible total value for Problem 
 - **Key Idea:** Always pick the rightmost available vault  
 - **Why It Works:** Later vaults are never worse than earlier ones, so picking right-to-left guarantees the best result.
 
+
+Mya - Currently Working on Algorithm 2 Problem S2
+🧩 Problem S2 – Unimodal Vault Values (Single Local Minimum)
+💡 Dynamic Programming Idea
+
+In this problem, the vault values first decrease and then increase, forming a unimodal (V-shaped) sequence with a single local minimum.
+Because the sequence is not strictly increasing or decreasing, the greedy approach from Problem S1 no longer guarantees optimal results.
+
+To maximize the total vault value while ensuring no two chosen vaults are within k positions of each other, we use a dynamic programming (DP) strategy.
+
+At each vault i, we make a choice:
+
+Option 1 – Skip it:
+The best total remains dp[i-1].
+
+Option 2 – Take it:
+We add values[i] to the best total up to vault i-(k+1) since we must skip the previous k vaults.
+
+The recurrence relation is:
+
+dp[i]=max(dp[i−1],values[i]+dp[i−(k+1)])
+
+By computing this iteratively for all i, we find the optimal total.
+We also track which vaults are chosen to reconstruct the exact indices (1-indexed) of the selected vaults.
+
+✅ Correctness Proof
+
+Let OPT(i) represent the maximum value achievable using the first i vaults under the spacing constraint.
+For each vault i, the algorithm chooses the better of two valid subproblems:
+
+Skip vault i:
+Then OPT(i) = OPT(i-1) — we don’t include this vault.
+
+Take vault i:
+We must skip the previous k vaults, giving
+OPT(i) = values[i] + OPT(i-(k+1)).
+
+Each subproblem is independent and smaller than the current one, satisfying the principle of optimal substructure.
+Since every state is computed only once and directly uses previously solved results, the algorithm ensures global optimality by combining locally optimal decisions.
+
+By backtracking through the decisions that led to each dp[i], we reconstruct a valid set of indices that yields the same maximum value, confirming both correctness and completeness of the solution.
+
+🕒 Time Complexity
+
+Θ(n) – The algorithm makes a single pass through the list, performing constant work per vault.
+
+🧠 Summary
+
+Type: Dynamic Programming
+
+Special Case: Unimodal (V-shaped) vault values
+
+Key Idea: Explore both “take” and “skip” choices for each vault
+
+Why It Works:
+Each subproblem builds on optimal solutions to smaller subproblems, ensuring that the final total value is globally maximal while respecting the k-spacing constraint.
+
+
