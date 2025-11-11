@@ -4,6 +4,7 @@ def program3(n: int, k: int, values: List[int]) -> Tuple[int, List[int]]:
     """
     Program 3: Naive recursive solution (Θ(2^n))
     """
+
     def dfs(i: int) -> Tuple[int, Tuple[int]]:
         if i >= n:
             return 0, ()

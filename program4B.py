@@ -6,31 +6,34 @@ def program4B(n: int, k: int, values: List[int]) -> Tuple[int, List[int]]:
     """
 
     dp = [0] * (n + 1)
-    parent = [("skip", i - 1) for i in range(n + 1)]
+    parent = [-1] * (n + 1)
 
     for i in range(1, n + 1):
-        take_prev = max(0, i - (k + 1))
-        take_val = values[i - 1] + dp[take_prev]
-        skip_val = dp[i - 1]
+        # Option 1: skip vault i
+        best_val = dp[i - 1]
+        best_parent = i - 1
 
-        if take_val >= skip_val:
-            dp[i] = take_val
-            parent[i] = ("take", take_prev)
-        else:
-            dp[i] = skip_val
-            parent[i] = ("skip", i - 1)
+        # Option 2: take vault i and try all valid previous choices
+        for j in range(max(0, i - k - 1)):
+            take_val = values[i - 1] + dp[j]
+            if take_val > best_val:
+                best_val = take_val
+                best_parent = j
 
-    
-    chosen = []
+        dp[i] = best_val
+        parent[i] = best_parent
+
+    # Reconstruct indices
+    res = []
     i = n
     while i > 0:
-        action, prev_i = parent[i]
-        if action == "take":
-            chosen.append(i)
-        i = prev_i
-
-    chosen.reverse()
-    return dp[n], chosen
+        if parent[i] < i - 1:  # vault i was taken
+            res.append(i)
+            i = parent[i]
+        else:
+            i -= 1
+    res.reverse()
+    return dp[n], res
 
 
 if __name__ == '__main__':
