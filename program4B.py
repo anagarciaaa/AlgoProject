@@ -14,11 +14,12 @@ def program4B(n: int, k: int, values: List[int]) -> Tuple[int, List[int]]:
         best_parent = i - 1
 
         # Option 2: take vault i and try all valid previous choices
-        for j in range(max(0, i - k - 1)):
+        for j in range(max(0, i - k - 1) + 1):
             take_val = values[i - 1] + dp[j]
             if take_val > best_val:
                 best_val = take_val
                 best_parent = j
+
 
         dp[i] = best_val
         parent[i] = best_parent
