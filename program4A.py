@@ -1,3 +1,4 @@
+
 from typing import List, Tuple
 from functools import lru_cache
 import sys
@@ -39,4 +40,3 @@ if __name__ == '__main__':
     print(m)
     for i in indices:
         print(i)
-
